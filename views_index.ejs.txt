@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Signal Updater</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Update Sinyal Trading</h1>
+    <form action="/signal" method="POST" class="signal-form">
+      <label for="pair">PAIR:</label>
+      <select name="pair" id="pair" required>
+        <% pairs.forEach(function(pair) { %>
+          <option value="<%= pair %>"><%= pair %></option>
+        <% }); %>
+      </select>
+      <label for="action">Aksi:</label>
+      <select name="action" id="action" required>
+        <option value="BUY">BUY</option>
+        <option value="SELL">SELL</option>
+      </select>
+      <label for="price">Harga:</label>
+      <input type="number" step="any" name="price" id="price" required placeholder="Masukkan harga" />
+      <button type="submit">Enter</button>
+    </form>
+    <h2>Sinyal Terbaru</h2>
+    <table>
+      <tr>
+        <th>PAIR</th>
+        <th>Aksi</th>
+        <th>Harga</th>
+        <th>Waktu</th>
+      </tr>
+      <% signals.forEach(function(signal) { %>
+        <tr>
+          <td><%= signal.pair %></td>
+          <td><%= signal.action %></td>
+          <td><%= signal.price %></td>
+          <td><%= new Date(signal.time).toLocaleString() %></td>
+        </tr>
+      <% }); %>
+    </table>
+  </div>
+</body>
+</html>
