@@ -1,0 +1,34 @@
+const fetch = require('node-fetch'); // npm install node-fetch@2
+
+const TELEGRAM_BOT_TOKEN = "isi_token_bot_kamu";
+const TELEGRAM_CHANNEL_ID = "@namachannelkamu"; // atau id channel (pakai tanda minus untuk supergroup)
+
+app.post('/sinyal', (req, res) => {
+  // Ambil data sinyal dari req.body
+  const { pair, aksi, harga } = req.body;
+  const waktu = new Date().toLocaleString();
+
+  // Format pesan
+  const pesan = `SINYAL TRADING\nPAIR: ${pair}\nAksi: ${aksi}\nHarga: ${harga}\nWaktu: ${waktu}`;
+
+  // Kirim ke Telegram
+  fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: TELEGRAM_CHANNEL_ID,
+      text: pesan
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Terkirim ke Telegram:', data);
+    // Lanjut proses web
+    // ... kode simpan ke array/database dll ...
+    res.redirect('/');
+  })
+  .catch(err => {
+    console.error('Gagal kirim Telegram:', err);
+    res.redirect('/');
+  });
+});
